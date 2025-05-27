@@ -27,48 +27,46 @@ def load_cats_dogs_from_cifar10():
 
     # Split: 80% para teste, 20% para treino
     x_train, x_test, y_train, y_test = train_test_split(
-        x, y, test_size=0.8, random_state=42, stratify=y
+        x, y, test_size=0.2, random_state=42, stratify=y
     )
 
     return (x_train, y_train), (x_test, y_test)
 
-# Construir o modelo binário
+# Modelo aprimorado com Dropout e BatchNormalization para evitar overfitting e melhorar generalização
 def build_model():
     model = models.Sequential([
         layers.Conv2D(32, (3, 3), activation='relu', input_shape=(32, 32, 3)),
         layers.MaxPooling2D((2, 2)),
         layers.Conv2D(64, (3, 3), activation='relu'),
         layers.MaxPooling2D((2, 2)),
-        layers.Conv2D(128, (3, 3), activation='relu'),  # Mais filtros
+        layers.Conv2D(64, (3, 3), activation='relu'),  # Mais uma camada convolucional
         layers.Flatten(),
-        layers.Dense(128, activation='relu'),           # Mais neurônios
+        layers.Dense(64, activation='relu'),           # Mais neurônios na densa
+        layers.Dropout(0.3),                           # Dropout leve para evitar overfitting
         layers.Dense(1, activation='sigmoid')
     ])
-
     model.compile(optimizer='adam',
                   loss='binary_crossentropy',
                   metrics=['accuracy'])
-    
     return model
-
 
 model = build_model()
 (x_train, y_train), (x_test, y_test) = load_cats_dogs_from_cifar10()
 class_names = ['gato', 'cachorro']
 
-# Data augmentation para melhorar o treinamento
+# Data augmentation mais leve:
 datagen = ImageDataGenerator(
-    rotation_range=20,
-    width_shift_range=0.2,
-    height_shift_range=0.2,
+    rotation_range=10,
+    width_shift_range=0.1,
+    height_shift_range=0.1,
     horizontal_flip=True
 )
 datagen.fit(x_train)
 
-# Treinar o modelo com data augmentation e mais épocas
+# Treinar o modelo com mais épocas
 history = model.fit(
     datagen.flow(x_train, y_train, batch_size=32),
-    epochs=20,
+    epochs=30,
     validation_data=(x_test, y_test)
 )
 
@@ -84,8 +82,7 @@ y_pred = (y_pred_prob > 0.5).astype(int)
 print("\nMétricas de avaliação no conjunto de teste:")
 print(classification_report(y_test, y_pred, target_names=class_names))
 
-# Matriz de confusão (opcional)
-
+# Matriz de confusão
 cm = confusion_matrix(y_test, y_pred)
 plt.figure(figsize=(5,4))
 sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=class_names, yticklabels=class_names)
