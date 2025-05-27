@@ -32,18 +32,21 @@ Foi usada a técnica de Data Augmentation para gerar variações das imagens de 
 
 ### Resultados
 
-As métricas de avaliação foram Precision, Recall e F1-Score, a acurácia do modelo sendo em média 80%
+As métricas de avaliação foram Precision, Recall e F1-Score, a acurácia do modelo sendo em média 80%:
+
 ![alt text](image.png)
 
-Também foi gerado uma matriz de confusão
+Também foi gerado uma matriz de confusão:
+
 ![alt text](image-1.png)
 
-O modelo conseguiu predizer corretamente na maioria dos casos.
+O modelo conseguiu predizer corretamente na maioria dos casos:
+
 ![alt text](image-2.png)
 
 ### Tempo Gasto
 
-O tempo de treinamento é de em aproximadamente 2 minutos, variando com o número de épocas usadas, cada época demora cerca de 4 segundos
+O tempo de treinamento é de em aproximadamente 2 minutos, variando com o número de épocas usadas, cada época demora cerca de 4 segundos.
 O tempo de desenvolvimento foi cerca de 7 horas
 
 ### Dificuldades
