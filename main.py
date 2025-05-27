@@ -1,10 +1,9 @@
 import cv2 
 import tensorflow as tf
-from tensorflow.keras import layers, models
+from keras import layers, models, datasets
 import matplotlib.pyplot as plt
-from tensorflow.keras.preprocessing import image
+from keras.preprocessing import image
 import numpy as np
-from sklearn.model_selection import train_test_split
 
 def read_img(path, isRGB = False):
     image = cv2.imread(path, cv2.IMREAD_COLOR if isRGB else cv2.IMREAD_GRAYSCALE)
@@ -18,8 +17,8 @@ def equalize(path):
     image = read_img(path)
     return cv2.equalizeHist(image)
 
-img_shiba_blur = gaussian_blur('./images/shiba.webp')
-img_shiba_hist = equalize('./images/shiba.webp')
+img_shiba_blur = gaussian_blur('./images/shiba.jpg')
+img_shiba_hist = equalize('./images/shiba.jpg')
 
 cv2.imshow("shiba blur", img_shiba_blur)
 cv2.imshow("shiba hist", img_shiba_hist)
@@ -30,7 +29,7 @@ cv2.destroyAllWindows()
 
 
 # Carregando o dataset CIFAR-10
-(x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
+(x_train, y_train), (x_test, y_test) = datasets.cifar10.load_data()
 
 # Normalização das imagens
 x_train = x_train.astype('float32') / 255.0
@@ -95,7 +94,7 @@ def predict_images(model, imgs_path):
         
         print(img_path, class_names[predict_class])
 
-predict_images(model, ['./images/shiba.webp', './images/gato1.jpg', './images/gato2.webp', './images/bodercollie.jpg', './images/golden.jpeg', './images/gato3.jpg' ])
+predict_images(model, ['./images/shiba.jpg', './images/gato1.jpg', './images/gato2.webp', './images/bodercollie.jpg', './images/golden.jpg', './images/gato3.jpg' ])
  
     
 
