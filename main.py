@@ -82,7 +82,6 @@ def load_cats_dogs_from_cifar10():
 
     return (x_train, y_train), (x_test, y_test)
 
-# Modelo aprimorado com Dropout e BatchNormalization para evitar overfitting e melhorar generalização
 def build_model():
     model = models.Sequential([
         layers.Conv2D(32, (3, 3), activation='relu', input_shape=(32, 32, 3)),
